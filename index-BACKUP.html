@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consórcio 30D - Seu Carro em 30 Dias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --surface: #0b1326;
+            --surface-container-low: #131b2e;
+            --surface-container: #171f33;
+            --surface-container-high: #222a3d;
+            --surface-container-highest: #2d3449;
+            --primary: #4edea3;
+            --primary-container: #10b981;
+            --secondary: #ffe083;
+            --secondary-container: #eec200;
+            --tertiary: #f9bd22;
+            --on-surface: #dae2fd;
+            --on-surface-variant: #bbcabf;
+            --on-primary: #003824;
+            --outline: #86948a;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-2xl: 5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--surface);
+            color: var(--on-surface);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Newsreader', serif;
+            font-weight: 600;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+        }
+
+        .slide-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+        .stagger-7 { transition-delay: 0.7s; }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(11, 19, 38, 0.85);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(138, 148, 138, 0.1);
+        }
+
+        .menu, .analytics {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface-container-high);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu:hover, .analytics:hover {
+            background: var(--surface-container-highest);
+            transform: scale(1.05);
+        }
+
+        .logo {
+            font-family: 'Newsreader', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        
+
+        .word-cloud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .word-cloud span {
+            position: absolute;
+            font-family: 'Newsreader', serif;
+            font-weight: 600;
+            white-space: nowrap;
+            animation: float-word linear infinite;
+            opacity: 0.12;
+        }
+
+        .word-cloud span:nth-child(1) { left: 5%; top: 10%; font-size: 1.5rem; color: var(--primary); animation-duration: 25s; }
+        .word-cloud span:nth-child(2) { left: 15%; top: 60%; font-size: 1.2rem; color: var(--secondary); animation-duration: 30s; animation-delay: -5s; }
+        .word-cloud span:nth-child(3) { left: 25%; top: 30%; font-size: 1.8rem; color: var(--primary); animation-duration: 20s; animation-delay: -10s; }
+        .word-cloud span:nth-child(4) { left: 35%; top: 70%; font-size: 1.3rem; color: var(--secondary); animation-duration: 28s; animation-delay: -3s; }
+        .word-cloud span:nth-child(5) { left: 45%; top: 15%; font-size: 1.6rem; color: var(--primary); animation-duration: 22s; animation-delay: -8s; }
+        .word-cloud span:nth-child(6) { left: 55%; top: 50%; font-size: 1.4rem; color: var(--secondary); animation-duration: 26s; animation-delay: -12s; }
+        .word-cloud span:nth-child(7) { left: 65%; top: 25%; font-size: 1.7rem; color: var(--primary); animation-duration: 24s; animation-delay: -2s; }
+        .word-cloud span:nth-child(8) { left: 75%; top: 65%; font-size: 1.1rem; color: var(--secondary); animation-duration: 32s; animation-delay: -15s; }
+        .word-cloud span:nth-child(9) { left: 85%; top: 40%; font-size: 1.5rem; color: var(--primary); animation-duration: 27s; animation-delay: -7s; }
+        .word-cloud span:nth-child(10) { left: 90%; top: 80%; font-size: 1.2rem; color: var(--secondary); animation-duration: 21s; animation-delay: -11s; }
+        .word-cloud span:nth-child(11) { left: 10%; top: 85%; font-size: 1.4rem; color: var(--primary); animation-duration: 29s; animation-delay: -4s; }
+        .word-cloud span:nth-child(12) { left: 50%; top: 85%; font-size: 1.6rem; color: var(--secondary); animation-duration: 23s; animation-delay: -9s; }
+        .word-cloud span:nth-child(13) { left: 80%; top: 10%; font-size: 1.3rem; color: var(--primary); animation-duration: 31s; animation-delay: -14s; }
+        .word-cloud span:nth-child(14) { left: 30%; top: 45%; font-size: 1.1rem; color: var(--secondary); animation-duration: 18s; animation-delay: -6s; }
+        .word-cloud span:nth-child(15) { left: 70%; top: 90%; font-size: 1.5rem; color: var(--primary); animation-duration: 26s; animation-delay: -1s; }
+
+        @keyframes float-word {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 1.5rem 3rem;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(249, 189, 34, 0.1) 0%, transparent 50%),
+                var(--surface);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234edea3' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-container));
+            border-radius: 2px;
+            animation: underline-grow 1s ease forwards;
+            animation-delay: 0.5s;
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        @keyframes underline-grow {
+            to { transform: scaleX(1); }
+        }
+
+        .hero .subtitle {
+            font-size: 1.125rem;
+            color: var(--on-surface-variant);
+            max-width: 500px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .cta-button {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-container));
+            color: var(--on-primary);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 3rem 1.5rem;
+            background: var(--surface-container-low);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--surface-container);
+            border-radius: 16px;
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-number {
+            display: block;
+            font-family: 'Newsreader', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number .suffix {
+            font-size: 0.6em;
+            opacity: 0.8;
+        }
+
+        .stat-number .decimal {
+            font-size: 0.6em;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--on-surface-variant);
+        }
+
+        section {
+            padding: 4rem 1.5rem;
+            background: var(--surface);
+        }
+
+        section h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: var(--on-surface);
+        }
+
+        .section-desc {
+            text-align: center;
+            color: var(--on-surface-variant);
+            margin-bottom: 3rem;
+        }
+
+        .perfil-ideal {
+            background: var(--surface-container-low);
+        }
+
+        .perfil-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .perfil-card {
+            background: var(--surface-container-high);
+            padding: 2rem;
+            border-radius: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .perfil-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-container));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .perfil-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.15);
+        }
+
+        .perfil-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .perfil-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .perfil-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .perfil-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .perfil-card p {
+            color: var(--on-surface-variant);
+            font-size: 0.9rem;
+        }
+
+        .process {
+            background: var(--surface);
+        }
+
+        .process-timeline {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-container), var(--secondary));
+            opacity: 0.3;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            background: var(--surface-container-high);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Newsreader', serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover .step-number {
+            background: var(--primary);
+            color: var(--on-primary);
+            box-shadow: 0 0 20px rgba(78, 222, 163, 0.5);
+        }
+
+        .step-content {
+            background: var(--surface-container);
+            padding: 1.5rem;
+            border-radius: 16px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover .step-content {
+            background: var(--surface-container-high);
+            transform: translateX(8px);
+        }
+
+        .step-content h4 {
+            color: var(--tertiary);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content h5 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            color: var(--on-surface-variant);
+            font-size: 0.9rem;
+        }
+
+        .process-step.highlight .step-number {
+            background: linear-gradient(135deg, var(--primary), var(--primary-container));
+            color: var(--on-primary);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .process-step.highlight .step-content {
+            background: linear-gradient(135deg, var(--surface-container), var(--surface-container-high));
+            border: 1px solid var(--primary);
+        }
+
+        .risco-zero {
+            background: var(--surface-container-low);
+        }
+
+        .risco-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .risco-card {
+            background: var(--surface-container);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .risco-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .risco-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .risco-card.destaque {
+            background: linear-gradient(135deg, var(--surface-container-high), var(--surface-container-highest));
+            border: 1px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .risco-card.destaque::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(78, 222, 163, 0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .risco-card.destaque i {
+            color: var(--primary);
+        }
+
+        .requisitos {
+            background: var(--surface);
+        }
+
+        .requisitos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .requisitos-box {
+            background: var(--surface-container);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .requisitos-box:hover {
+            background: var(--surface-container-high);
+        }
+
+        .requisitos-box h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .requisitos-box ul {
+            list-style: none;
+        }
+
+        .requisitos-box li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--on-surface-variant);
+            border-bottom: 1px solid rgba(138, 148, 138, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .requisitos-box li:last-child {
+            border-bottom: none;
+        }
+
+        .requisitos-box li:hover {
+            color: var(--on-surface);
+            padding-left: 0.5rem;
+        }
+
+        .requisitos-box li i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .frota {
+            background: var(--surface-container-low);
+        }
+
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .car-card {
+            background: var(--surface-container-highest);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .car-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 224, 131, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .car-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .car-image {
+            height: 200px;
+            background: var(--surface-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .car-card:hover .car-image img {
+            transform: scale(1.05);
+        }
+
+        .car-info {
+            padding: 1.5rem;
+        }
+
+        .car-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .car-year {
+            color: var(--on-surface-variant);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .car-price {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .car-price .entrada {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .car-price .parcela {
+            color: var(--on-surface-variant);
+            font-size: 0.9rem;
+        }
+
+        .oportunidades {
+            background: var(--surface);
+            text-align: center;
+        }
+
+        .oportunidades-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .oportunidade-item {
+            background: var(--surface-container);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .oportunidade-item:hover {
+            background: var(--surface-container-high);
+            transform: scale(1.05);
+        }
+
+        .car-name {
+            font-weight: 500;
+        }
+
+        .car-entrada {
+            color: var(--secondary);
+            font-weight: 600;
+            background: rgba(255, 224, 131, 0.15);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+
+        .faq {
+            background: var(--surface-container-low);
+        }
+
+        .faq-item {
+            max-width: 700px;
+            margin: 0 auto 1rem;
+            background: var(--surface-container);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            background: var(--surface-container-high);
+        }
+
+        .faq-question {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question i {
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        .faq-answer p {
+            padding: 0 1.5rem 1.25rem;
+            color: var(--on-surface-variant);
+            font-size: 0.9rem;
+        }
+
+        .cta-final {
+            background: 
+                radial-gradient(ellipse at center, rgba(16, 185, 129, 0.2) 0%, transparent 70%),
+                var(--surface);
+            text-align: center;
+            padding: 5rem 1.5rem;
+        }
+
+        .cta-final h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-final p {
+            color: var(--on-surface-variant);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer {
+            background: var(--surface-container-low);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Newsreader', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-copy {
+            color: var(--on-surface-variant);
+            font-size: 0.875rem;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            background: rgba(11, 19, 38, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 0.75rem 0;
+            border-top: 1px solid rgba(138, 148, 138, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-item i {
+            font-size: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover i {
+            transform: translateY(-3px);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            animation: typing 3s steps(30) forwards, blink 0.7s step-end infinite;
+            display: inline-block;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .process-timeline::before {
+                left: 20px;
+            }
+
+            .step-number {
+                width: 42px;
+                height: 42px;
+                min-width: 42px;
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            section h2 {
+                font-size: 1.5rem;
+            }
+
+            .bottom-nav {
+                display: flex;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .bottom-nav {
+                display: none;
+            }
+        }
+
+        .word-highlight {
+            position: relative;
+        }
+
+        .word-highlight::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -4px;
+            right: -4px;
+            height: 8px;
+            background: var(--secondary);
+            opacity: 0.3;
+            transform: skewX(-12deg);
+            z-index: -1;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-float i {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                bottom: 100px;
+                width: 55px;
+                height: 55px;
+            }
+
+            .whatsapp-float i {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="logo">Consórcio 30D</div>
+        <div class="analytics">
+            <i class="fas fa-chart-line"></i>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="word-cloud">
+            <span>Consórcio</span>
+            <span>Carro Novo</span>
+            <span>Score Baixo</span>
+            <span>Financiamento</span>
+            <span>30 Dias</span>
+            <span>Aprovação</span>
+            <span>Zero Entrada</span>
+            <span>Parcelas</span>
+            <span>Veículo</span>
+            <span>SPC Serasa</span>
+            <span>Crédito</span>
+            <span>Garantia</span>
+            <span>Entrega</span>
+            <span>Oportunidade</span>
+            <span>Sonho</span>
+        </div>
+        <h1 class="animate-on-scroll">
+            Seu Carro <span class="highlight">em 30 Dias</span>
+        </h1>
+        <p class="subtitle animate-on-scroll stagger-1">
+            Especialistas em viabilizar conquistas para quem teve o financiamento negado. <span class="word-highlight">Totalmente garantido.</span>
+        </p>
+        <button class="cta-button animate-on-scroll stagger-2" onclick="window.open('https://wa.me/5531983526017', '_blank')">Simular Agora</button>
+    </section>
+
+    <section class="stats">
+        <div class="stat-item animate-on-scroll stagger-1">
+            <span class="stat-number">1400+</span>
+            <span class="stat-label">Clientes Atendidos</span>
+        </div>
+        <div class="stat-item animate-on-scroll stagger-2">
+            <span class="stat-number">98.2%</span>
+            <span class="stat-label">Sucesso</span>
+        </div>
+        <div class="stat-item animate-on-scroll stagger-3">
+            <span class="stat-number">21 Dias</span>
+            <span class="stat-label">Média Entrega</span>
+        </div>
+    </section>
+
+    <section class="perfil-ideal">
+        <h2 class="animate-on-scroll">Perfil Ideal</h2>
+        <p class="section-desc animate-on-scroll">Nossa solução é desenhada especificamente para este cenário:</p>
+        
+        <div class="perfil-grid">
+            <div class="perfil-card animate-on-scroll stagger-1">
+                <i class="fas fa-user-check"></i>
+                <h3>Nome Limpo</h3>
+                <p>Sem restrições ativas no SPC/Serasa.</p>
+            </div>
+            <div class="perfil-card animate-on-scroll stagger-2">
+                <i class="fas fa-chart-line"></i>
+                <h3>Score Baixo</h3>
+                <p>Especialistas em score inferior a 600.</p>
+            </div>
+            <div class="perfil-card animate-on-scroll stagger-3">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>Entrada</h3>
+                <p>Capacidade de entrada entre 20% e 30%.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="process">
+        <h2 class="animate-on-scroll">Processo 30 Dias</h2>
+        
+        <div class="process-timeline">
+            <div class="process-step animate-on-scroll slide-left stagger-1">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Dia 1-3</h4>
+                    <h5>Qualificação Inicial</h5>
+                    <p>Coleta de documentação e confirmação de nome limpo para pré-qualificação.</p>
+                </div>
+            </div>
+            
+            <div class="process-step animate-on-scroll slide-left stagger-2">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Dia 3-7</h4>
+                    <h5>Análise Bancária</h5>
+                    <p>Validação junto ao Itaú/BB para liberação de crédito e alienação.</p>
+                </div>
+            </div>
+            
+            <div class="process-step animate-on-scroll slide-left stagger-3">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Dia 7-10</h4>
+                    <h5>Contrato de Serviço</h5>
+                    <p>Segurança jurídica completa com política de risco zero garantida em contrato.</p>
+                </div>
+            </div>
+            
+            <div class="process-step animate-on-scroll slide-left stagger-4">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Dia 10-20</h4>
+                    <h5>Consultoria de Crédito</h5>
+                    <p>Trabalho técnico para elevação de score e organização financeira do cliente.</p>
+                </div>
+            </div>
+            
+            <div class="process-step animate-on-scroll slide-left stagger-5">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Dia 20-25</h4>
+                    <h5>Seleção de Grupo</h5>
+                    <p>Análise estatística para inscrição no grupo com maior probabilidade de contemplação.</p>
+                </div>
+            </div>
+            
+            <div class="process-step highlight animate-on-scroll scale-in stagger-6">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h4>Dia 30</h4>
+                    <h5>Entrega do Veículo</h5>
+                    <p>Independente da contemplação, você sai com o veículo na data acordada.</p>
+                </div>
+            </div>
+            
+            <div class="process-step animate-on-scroll slide-left stagger-7">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h4>Dia 30+</h4>
+                    <h5>Pós-Entrega</h5>
+                    <p>Monitoramento contínuo até a formalização da contemplação da cota.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="risco-zero">
+        <h2 class="animate-on-scroll">Risco Zero</h2>
+        <p class="section-desc animate-on-scroll">Proteção contratual em qualquer cenário</p>
+        
+        <div class="risco-content">
+            <div class="risco-card animate-on-scroll stagger-1">
+                <i class="fas fa-star"></i>
+                <h4>Cenário Ideal</h4>
+                <p>Tudo corre conforme planejado, cliente contemplado em 30 dias e recebe o veículo.</p>
+            </div>
+            
+            <div class="risco-card destaque animate-on-scroll stagger-2">
+                <i class="fas fa-shield-alt"></i>
+                <h4>Garantia Extra</h4>
+                <p>Caso a contemplação não ocorra em 30 dias, você sai com o carro no mesmo dia. O risco é zero para o cliente.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="requisitos">
+        <h2 class="animate-on-scroll">Requisitos Obrigatórios</h2>
+        
+        <div class="requisitos-grid">
+            <div class="requisitos-box animate-on-scroll stagger-1">
+                <h3>Regras Cliente</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Nome limpo sem restrições ativas</li>
+                    <li><i class="fas fa-check-circle"></i> Renda mensal estável comprovável</li>
+                    <li><i class="fas fa-check-circle"></i> Entrada disponível (20-30%)</li>
+                </ul>
+            </div>
+            
+            <div class="requisitos-box animate-on-scroll stagger-2">
+                <h3>Regras Veículo</h3>
+                <ul>
+                    <li><i class="fas fa-car"></i> Ano de uso: Máximo 12 anos</li>
+                    <li><i class="fas fa-ban"></i> Não pode ser veículo de leilão</li>
+                    <li><i class="fas fa-check-circle"></i> Marca/Modelo aceitos pelo banco</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="frota">
+        <h2 class="animate-on-scroll">Nossa Frota</h2>
+        <p class="section-desc animate-on-scroll">A elite da mobilidade urbana</p>
+        
+        <div class="car-grid">
+            <div class="car-card animate-on-scroll scale-in stagger-1">
+                <div class="car-image">
+                    <img src="https://via.placeholder.com/300x200?text=SAVEIRO+ROBUST" alt="Saveiro Robust">
+                </div>
+                <div class="car-info">
+                    <h4>SAVEIRO ROBUST 1.6 16V TOTAL FLEX MANUAL</h4>
+                    <p class="car-year">2023/2024 | 37.019 KM</p>
+                    <div class="car-price">
+                        <span class="entrada">Entrada R$ 16.000,00</span>
+                        <span class="parcela">31 x R$ 2.839,00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="car-card animate-on-scroll scale-in stagger-2">
+                <div class="car-image">
+                    <img src="https://via.placeholder.com/300x200?text=STRADA+ENDURANCE" alt="Strada Endurance">
+                </div>
+                <div class="car-info">
+                    <h4>STRADA ENDURANCE CP FLEX 1.3 MANUAL</h4>
+                    <p class="car-year">2023/2024 | 36.690 KM</p>
+                    <div class="car-price">
+                        <span class="entrada">Entrada R$ 19.000,00</span>
+                        <span class="parcela">31 x R$ 2.975,00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="oportunidades">
+        <h2 class="animate-on-scroll">Oportunidades Exclusivas</h2>
+        <p class="section-desc animate-on-scroll">Condições especiais para pronta entrega</p>
+        
+        <div class="oportunidades-list">
+            <div class="oportunidade-item animate-on-scroll stagger-1">
+                <span class="car-name">Saveiro Robust 1.6</span>
+                <span class="car-entrada">Entrada 16k</span>
+            </div>
+            <div class="oportunidade-item animate-on-scroll stagger-2">
+                <span class="car-name">Strada Endurance</span>
+                <span class="car-entrada">Entrada 19k</span>
+            </div>
+            <div class="oportunidade-item animate-on-scroll stagger-3">
+                <span class="car-name">HB20S Comfort Plus</span>
+                <span class="car-entrada">Entrada 15.900</span>
+            </div>
+            <div class="oportunidade-item animate-on-scroll stagger-4">
+                <span class="car-name">Spin Premier 1.8</span>
+                <span class="car-entrada">Entrada 19.900</span>
+            </div>
+            <div class="oportunidade-item animate-on-scroll stagger-5">
+                <span class="car-name">Mobi Like 1.0</span>
+                <span class="car-entrada">Entrada 13.000</span>
+            </div>
+        </div>
+        
+        <button class="cta-button secondary animate-on-scroll" onclick="window.open('https://wa.me/5531983526017', '_blank')">Ver Mais Ofertas</button>
+    </section>
+
+    <section class="faq">
+        <h2 class="animate-on-scroll">Dúvidas Frequentes</h2>
+        
+        <div class="faq-item animate-on-scroll">
+            <div class="faq-question">
+                <span>Vocês prometem contemplação?</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Trabalhamos com estatísticas e análise de crédito para maximizar suas chances. Nossa garantia é que você sai com o veículo no dia 30, independente da contemplação.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item animate-on-scroll">
+            <div class="faq-question">
+                <span>Qual a entrada mínima?</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>A entrada varia entre 20% e 30% do valor do veículo, dependendo do perfil de crédito e da análise bancária.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item animate-on-scroll">
+            <div class="faq-question">
+                <span>E se o banco negar a análise inicial?</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Caso a análise inicial seja negada, devolvemos o valor da entrada integralmente, sem burocracia.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item animate-on-scroll">
+            <div class="faq-question">
+                <span>Posso escolher qualquer carro?</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Você pode escolher entre os modelos aceitos pelo banco, que variam conforme o ano de fabricação (máximo 12 anos) e disponibilidade.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-final">
+        <h2 class="animate-on-scroll">Pronto para sua nova conquista?</h2>
+        <p class="animate-on-scroll stagger-1">Receba uma análise gratuita agora e descubra como sair de carro novo em 30 dias.</p>
+        <button class="cta-button animate-on-scroll stagger-2" onclick="window.open('https://wa.me/5531983526017', '_blank')">Fazer Análise Gratuita</button>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-logo">Consórcio 30D</div>
+        
+        <div class="footer-links">
+            <a href="privacidade.html">Privacidade</a>
+            <a href="termos.html">Termos</a>
+            <a href="cultura.html">Cultura</a>
+        </div>
+        
+        <div class="footer-copy">
+            © 2024 Consórcio 30D. Excelência em Mobilidade. Proibida reprodução total ou parcial.
+        </div>
+    </footer>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-car"></i>
+            <span>Veículos</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-tasks"></i>
+            <span>Processo</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-headset"></i>
+            <span>Suporte</span>
+        </a>
+    </nav>
+
+    <a href="https://wa.me/5531983526017" class="whatsapp-float" target="_blank" title="Fale conosco no WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        function animateNumber(element, target, duration = 2000) {
+            const isPercentage = element.textContent.includes('%');
+            const isDias = element.textContent.includes('Dias');
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    start = target;
+                    clearInterval(timer);
+                }
+                
+                if (isPercentage) {
+                    element.textContent = start.toFixed(1).replace('.', ',') + '%';
+                } else if (isDias) {
+                    element.textContent = Math.floor(start) + ' Dias';
+                } else {
+                    element.textContent = Math.floor(start) + '+';
+                }
+            }, 16);
+        }
+
+        const numberObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                    entry.target.classList.add('animated');
+                    const targetText = entry.target.textContent;
+                    let target = 0;
+                    
+                    if (targetText.includes('%')) {
+                        target = parseFloat(targetText.replace('%', '').replace(',', '.'));
+                    } else if (targetText.includes('Dias')) {
+                        target = parseInt(targetText.replace('Dias', '').trim());
+                    } else {
+                        target = parseInt(targetText.replace('+', '').trim());
+                    }
+                    
+                    if (targetText.includes('%')) {
+                        entry.target.textContent = '0,0%';
+                    } else if (targetText.includes('Dias')) {
+                        entry.target.textContent = '0 Dias';
+                    } else {
+                        entry.target.textContent = '0+';
+                    }
+                    
+                    animateNumber(entry.target, target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-number').forEach(el => {
+            numberObserver.observe(el);
+        });
+
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(faq => {
+                    faq.classList.remove('active');
+                });
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
