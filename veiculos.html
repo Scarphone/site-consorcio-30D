@@ -75,6 +75,143 @@
             font-size: 1.1rem;
         }
 
+        .section-highlight {
+            background: linear-gradient(135deg, var(--surface-container), var(--surface-container-high));
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            border-radius: 24px;
+            border: 1px solid rgba(78, 222, 163, 0.2);
+        }
+
+        .section-highlight-title {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-highlight-title h2 {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .section-highlight-subtitle {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .destaque-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 0 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .destaque-card {
+            background: var(--surface-container-highest);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .destaque-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .destaque-image {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .destaque-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .destaque-badges {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        }
+
+        .destaque-badge {
+            background: var(--primary);
+            color: var(--on-primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .destaque-badge.km {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .destaque-info {
+            padding: 1rem;
+        }
+
+        .destaque-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--on-surface);
+            line-height: 1.3;
+        }
+
+        .destaque-price {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .destaque-btn {
+            display: block;
+            text-align: center;
+            background: var(--primary);
+            color: var(--on-primary);
+            padding: 1rem;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 0 0 16px 16px;
+            transition: all 0.3s ease;
+        }
+
+        .destaque-btn:hover {
+            background: var(--primary-container);
+        }
+
+        .see-all-btn {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto 0;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .see-all-btn:hover {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
         .filters {
             display: flex;
             justify-content: center;
@@ -267,7 +404,78 @@
     <div class="container">
         <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Voltar</a>
         
-        <div class="page-title">
+        <div class="section-highlight">
+            <div class="section-highlight-title">
+                <h2>OFERTAS EM DESTAQUE</h2>
+            </div>
+            <p class="section-highlight-subtitle">Carros revisados com garantia!</p>
+            
+            <div class="destaque-grid">
+                <div class="destaque-card">
+                    <div class="destaque-image">
+                        <img src="./imagens.mid/WhatsApp Image 2026-03-30 at 15.02.55.jpeg" alt="Saveiro Robust">
+                        <div class="destaque-badges">
+                            <span class="destaque-badge">Pronta Entrega</span>
+                            <span class="destaque-badge km">0km</span>
+                        </div>
+                    </div>
+                    <div class="destaque-info">
+                        <h3>SAVEIRO ROBUST 1.6 16V</h3>
+                        <span class="destaque-price">R$ 16.000 entrada</span>
+                    </div>
+                    <a href="https://wa.me/5531983526017" class="destaque-btn" target="_blank">Garanta Agora</a>
+                </div>
+
+                <div class="destaque-card">
+                    <div class="destaque-image">
+                        <img src="./imagens.mid/WhatsApp Image 2026-03-30 at 15.02.56.jpeg" alt="Strada Endurance">
+                        <div class="destaque-badges">
+                            <span class="destaque-badge">Melhor Custo</span>
+                            <span class="destaque-badge km">0km</span>
+                        </div>
+                    </div>
+                    <div class="destaque-info">
+                        <h3>STRADA ENDURANCE 1.3</h3>
+                        <span class="destaque-price">R$ 19.000 entrada</span>
+                    </div>
+                    <a href="https://wa.me/5531983526017" class="destaque-btn" target="_blank">Garanta Agora</a>
+                </div>
+
+                <div class="destaque-card">
+                    <div class="destaque-image">
+                        <img src="./imagens.mid/WhatsApp Image 2026-03-30 at 15.02.55 (1).jpeg" alt="HB20S">
+                        <div class="destaque-badges">
+                            <span class="destaque-badge">Best Seller</span>
+                            <span class="destaque-badge km">0km</span>
+                        </div>
+                    </div>
+                    <div class="destaque-info">
+                        <h3>HB20S COMFORT PLUS</h3>
+                        <span class="destaque-price">R$ 15.900 entrada</span>
+                    </div>
+                    <a href="https://wa.me/5531983526017" class="destaque-btn" target="_blank">Garanta Agora</a>
+                </div>
+
+                <div class="destaque-card">
+                    <div class="destaque-image">
+                        <img src="./imagens.mid/WhatsApp Image 2026-03-30 at 15.02.56 (2).jpeg" alt="Mobi">
+                        <div class="destaque-badges">
+                            <span class="destaque-badge">Mais Barato</span>
+                            <span class="destaque-badge km">0km</span>
+                        </div>
+                    </div>
+                    <div class="destaque-info">
+                        <h3>MOBI LIKE 1.0</h3>
+                        <span class="destaque-price">R$ 13.000 entrada</span>
+                    </div>
+                    <a href="https://wa.me/5531983526017" class="destaque-btn" target="_blank">Garanta Agora</a>
+                </div>
+            </div>
+            
+            <a href="#todos-veiculos" class="see-all-btn">CLIQUE E VEJA TODO NOSSO ESTOQUE</a>
+        </div>
+
+        <div class="page-title" id="todos-veiculos">
             <h1>Nossos Modelos</h1>
             <p>Escolha o carro dos seus sonhos com as melhores condições</p>
         </div>
