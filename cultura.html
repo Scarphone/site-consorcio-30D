@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultura Organizacional - Consórcio 30D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --surface: #0b1326;
+            --surface_container: #171f33;
+            --surface_container_low: #131b2e;
+            --primary: #4edea3;
+            --primary_container: #10b981;
+            --secondary: #ffe083;
+            --on-surface: #dae2fd;
+            --on-surface-variant: #bbcabf;
+            --on-primary: #003824;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--surface);
+            color: var(--on-surface);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 { font-family: 'Newsreader', serif; font-weight: 600; }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        
+        .fade-in.visible { opacity: 1; }
+        
+        .slide-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+        
+        .header {
+            background: var(--surface_container);
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(78, 222, 163, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-family: 'Newsreader', serif;
+            transition: all 0.3s ease;
+        }
+        
+        .header a:hover {
+            text-shadow: 0 0 20px rgba(78, 222, 163, 0.5);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 6rem 1.5rem 3rem;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-title h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-title p {
+            color: var(--on-surface-variant);
+            font-size: 1.1rem;
+        }
+        
+        .mission-vision-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .mvv-card {
+            background: var(--surface_container);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(78, 222, 163, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .mvv-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .mvv-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .mvv-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .mvv-card p {
+            color: var(--on-surface-variant);
+            font-size: 0.95rem;
+        }
+        
+        .culture-section {
+            background: var(--surface_container_low);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+        
+        .culture-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .culture-section h2 i {
+            color: var(--secondary);
+        }
+        
+        .culture-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .culture-item {
+            background: var(--surface_container);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .culture-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .culture-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .culture-item h4 {
+            color: var(--on-surface);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .culture-item p {
+            color: var(--on-surface-variant);
+            font-size: 0.85rem;
+        }
+        
+        .history {
+            margin-top: 2rem;
+        }
+        
+        .history h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .history p {
+            color: var(--on-surface-variant);
+            margin-bottom: 1rem;
+        }
+        
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-box {
+            background: var(--surface_container);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-3px);
+        }
+        
+        .stat-number {
+            font-family: 'Newsreader', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: block;
+        }
+        
+        .stat-label {
+            color: var(--on-surface-variant);
+            font-size: 0.85rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        
+        .back-link:hover { 
+            text-decoration: underline;
+            background: rgba(78, 222, 163, 0.1);
+        }
+        
+        .footer {
+            background: var(--surface_container);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(78, 222, 163, 0.2);
+            margin-top: 3rem;
+        }
+        
+        .footer p { color: var(--on-surface-variant); font-size: 0.9rem; }
+        .footer a { color: var(--primary); text-decoration: none; transition: all 0.3s ease; }
+        .footer a:hover { text-shadow: 0 0 10px rgba(78, 222, 163, 0.5); }
+        
+        @media (max-width: 600px) {
+            .page-title h1 { font-size: 1.8rem; }
+            .mission-vision-values { grid-template-columns: 1fr; }
+            .culture-items { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index-dark-refinada.html">Consórcio 30D</a>
+    </header>
+    
+    <div class="container">
+        <a href="index-dark-refinada.html" class="back-link animate-on-scroll"><i class="fas fa-arrow-left"></i> Voltar para página inicial</a>
+        
+        <div class="page-title">
+            <h1 class="animate-on-scroll">Nossa Cultura</h1>
+            <p class="animate-on-scroll stagger-1">Quem somos e o que nos move</p>
+        </div>
+        
+        <div class="mission-vision-values">
+            <div class="mvv-card animate-on-scroll scale-in stagger-1">
+                <i class="fas fa-bullseye"></i>
+                <h3>Missão</h3>
+                <p>Transformar a vida de brasileiros facilitando o acesso ao carro próprio, mesmo para quem tem dificuldades de crédito.</p>
+            </div>
+            
+            <div class="mvv-card animate-on-scroll scale-in stagger-2">
+                <i class="fas fa-eye"></i>
+                <h3>Visão</h3>
+                <p>Ser referência nacional em consórcio para pessoas com score baixo, tornando o sonho do carro zero realidade para todos.</p>
+            </div>
+            
+            <div class="mvv-card animate-on-scroll scale-in stagger-3">
+                <i class="fas fa-heart"></i>
+                <h3>Valores</h3>
+                <p>Transparência, compromisso, ética, inovação e respeito ao cliente em primeiro lugar.</p>
+            </div>
+        </div>
+        
+        <div class="stats-section">
+            <div class="stat-box animate-on-scroll scale-in stagger-2">
+                <span class="stat-number">1400+</span>
+                <span class="stat-label">Carros Entregues</span>
+            </div>
+            <div class="stat-box animate-on-scroll scale-in stagger-3">
+                <span class="stat-number">98.2%</span>
+                <span class="stat-label">Taxa de Satisfação</span>
+            </div>
+            <div class="stat-box animate-on-scroll scale-in stagger-4">
+                <span class="stat-number">21</span>
+                <span class="stat-label">Dias Médios de Entrega</span>
+            </div>
+        </div>
+        
+        <div class="culture-section">
+            <h2 class="animate-on-scroll"><i class="fas fa-users"></i> Nossa Equipe</h2>
+            <p style="color: var(--on-surface-variant); margin-bottom: 1.5rem;" class="animate-on-scroll stagger-1">Time dedicado e especializado em transformar sonhos em realidade.</p>
+            <div class="culture-items">
+                <div class="culture-item animate-on-scroll scale-in stagger-2">
+                    <i class="fas fa-user-tie"></i>
+                    <h4>Consultores Especializados</h4>
+                    <p>Profissionais capacitados para atender seu caso</p>
+                </div>
+                <div class="culture-item animate-on-scroll scale-in stagger-3">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Analistas de Crédito</h4>
+                    <p>Experts em elevação de score</p>
+                </div>
+                <div class="culture-item animate-on-scroll scale-in stagger-4">
+                    <i class="fas fa-headset"></i>
+                    <h4>Atendimento Humanizado</h4>
+                    <p>Sua satisfação é nossa prioridade</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="culture-section">
+            <h2 class="animate-on-scroll"><i class="fas fa-lightbulb"></i> Diferenciais</h2>
+            <div class="culture-items">
+                <div class="culture-item animate-on-scroll scale-in stagger-1">
+                    <i class="fas fa-clock"></i>
+                    <h4>Entrega em 30 Dias</h4>
+                    <p>Garantia de prazo cumprido</p>
+                </div>
+                <div class="culture-item animate-on-scroll scale-in stagger-2">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Risco Zero</h4>
+                    <p>Compramos o carro se não houver contemplação</p>
+                </div>
+                <div class="culture-item animate-on-scroll scale-in stagger-3">
+                    <i class="fas fa-file-contract"></i>
+                    <h4>Contrato Transparente</h4>
+                    <p>Sem letras miúdas</p>
+                </div>
+                <div class="culture-item animate-on-scroll scale-in stagger-4">
+                    <i class="fas fa-percentage"></i>
+                    <h4>Score Baixo? Sem Problema!</h4>
+                    <p>Trabalhamos com todos os perfis</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="history">
+            <h2 class="animate-on-scroll">Nossa História</h2>
+            <p class="animate-on-scroll stagger-1">A Consórcio 30D nasceu com uma missão clara: ajudar brasileiros que foram negados pelas financeiras tradicionais a realizar o sonho do carro próprio.</p>
+            <p class="animate-on-scroll stagger-2">Fundada por profissionais com mais de 10 anos de experiência no mercado financeiro, identificamos uma lacuna: milhares de pessoas com condições de pagar um consórcio, mas que eram rejeitadas por terem score baixo ou restrições no nome.</p>
+            <p class="animate-on-scroll stagger-3">Desenvolvemos uma metodologia exclusiva que combina consultoria de crédito, trabalho de elevação de score e estratégias estatísticas para maximizar as chances de contemplação.</p>
+            <p class="animate-on-scroll stagger-4">Hoje, orgulhamo-nos de ter entregue mais de 1.400 veículos e transformado a vida de milhares de famílias brasileiras.</p>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; 2026 Consórcio 30D. Todos os direitos reservados.</p>
+        <p>Desenvolvido pela <a href="https://index10.com.br" target="_blank">Agência Index10</a></p>
+    </footer>
+    
+    <script>
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
